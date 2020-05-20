@@ -1,0 +1,64 @@
+#!/bin/bash
+
+######clear all the output file####
+sed -i '1,$ d' skeleton_msssim.txt          #implement in the ./msssim.m
+sed -i '1,$ d' compressRate.txt             #implement in the imConvert function
+
+######For nested loop#######
+cd ../Image
+for file in *
+do
+	cd $file
+	for image in *.ppm
+	do
+		echo $file ': ' $image >> ../../Code/compressRate.txt
+		echo $file ': ' $image >> ../../Code/skeleton_msssim.txt
+
+		sz_orig=$(stat -c '%s' $image) #size of the original image.
+
+		for layers in 20 30 40
+		do
+			for islandThreshold in 0.005 0.01
+			do
+
+				for Saliency in 0.2 0.6 1 
+				do
+					for SkeletonThreshold in 10
+					do
+						for distinguishable_interval in 5
+						do
+						
+						####### write into config ######
+						cd ../../Code/imConvert
+						sed -i '19,$ d' ./config.txt
+						echo 'filename = '../../Image/$file/$image >> ./config.txt
+						echo 'num_layers = ' $layers >> ./config.txt
+						echo 'islandThreshold = ' $islandThreshold >> ./config.txt
+						echo 'ssThreshold = ' $Saliency >> ./config.txt
+						echo 'SkeletonThreshold = ' $SkeletonThreshold >> ./config.txt
+						echo 'distinguishable_interval = ' $distinguishable_interval>> ./config.txt
+						
+						######## execute skeleton #######
+						./skeletonify config.txt
+						cd ../imShow
+
+						sz_out=$(stat -c '%s' output.sir) #The size of the output file
+
+						echo "scale=4 ; $sz_orig / $sz_out" | bc >> ../compressRate.txt
+
+						./show_skeleton output.sir  #This creates a decompressed image, called output.png
+						cd .. 
+
+						###### compute msssim #####
+						/usr/local/MATLAB/R2016b/bin/matlab -nosplash -nodesktop -r "msssim('../Image/$file/$image','imShow/output.png');quit;"
+						done
+						cd ../Image/$file
+					done
+				done	
+			done
+		done
+
+	done
+	cd ..
+done			
+exit 0

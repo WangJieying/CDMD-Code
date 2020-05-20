@@ -1,0 +1,8 @@
+Computing skeletons took = 270 mms (0 ms)
+Computing skeletons took = 230 mms (0 ms)
+Computing skeletons took = 265 mms (0 ms)
+Computing skeletons took = 305 mms (0 ms)
+Computing skeletons took = 270 mms (0 ms)
+Computing skeletons took = 253 mms (0 ms)
+Computing skeletons took = 310 mms (0 ms)
+Computing skeletons took = 289 mms (0 ms)

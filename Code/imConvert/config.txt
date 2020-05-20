@@ -1,0 +1,24 @@
+outputLevel=v
+#colorspace = ycbcr
+#layer_selection
+layer_selection = cumulative
+# external compression algorithm 
+compression_method = zpaq
+encoding = traditional
+# perform overlap pruning?
+overlap_pruning = false
+# allowed radius difference before pruning
+overlap_pruning_epsilon = .05
+# perform bundling?
+bundle = false
+alpha = 1
+epsilon = 5
+outputFile = ../imShow/output.sir
+#########################
+# input image. Must be PGM or PPM 
+filename = ../../Image/animal/1.ppm
+num_layers =  20
+islandThreshold =  0.005
+ssThreshold =  0.2
+SkeletonThreshold =  10
+distinguishable_interval =  5
